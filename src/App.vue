@@ -1,7 +1,15 @@
 <template>
-  <div></div>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "App",
+};
+</script>
 
-<style></style>
+<style>
+/* стили для App.vue, если нужны */
+</style>

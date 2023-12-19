@@ -1,36 +1,47 @@
 <template>
-  <Carousel>
-    <Slide v-for="slide in slides" :key="slide.id">
-      <div class="carousel__item d-flex justify-content-between">
-        <div class="slider-text">
-          <div class="slider-title">{{ slide.title }}</div>
-          <div class="slider-p">{{ slide.content }}</div>
-          <button><div>Подробнее</div></button>
+  <div class="slider">
+    <!-- Стрелки в левом верхнем углу -->
+
+    <!-- Слайды -->
+    <div class="slides">
+      <div
+        v-for="(slide, index) in slides"
+        :key="index"
+        class="slide d-flex"
+        v-show="index === currentIndex"
+      >
+        <div class="slider-text col-5">
+          <div class="slide-title">{{ slide.title }}</div>
+          <div class="slide-content">{{ slide.content }}</div>
+          <button class="slide-btn"><div>Подробнее</div></button>
         </div>
-        <div class="col-6">
-          <img src="../images/slide1.png" alt="" class="img-fluid" />
-        </div>
+        <img
+          :src="require(`@/images/${slide.image}`)"
+          alt="src-image"
+          class="img-fluid col-6"
+        />
       </div>
-    </Slide>
-    <template #addons>
-      <Pagination />
-    </template>
-  </Carousel>
+    </div>
+
+    <!-- Пагинация внизу слева -->
+    <div class="pagination">
+      <span
+        v-for="(slide, index) in slides"
+        :key="index"
+        @click="goToSlide(index)"
+        :class="{ active: index === currentIndex }"
+        class="pagination-item"
+      ></span>
+    </div>
+
+    <!-- Стрелки в правом нижнем углу -->
+  </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { Carousel, Pagination, Slide } from "vue3-carousel";
-// import { ref } from "vue";
+import "./MainSlider.css";
 
-import "vue3-carousel/dist/carousel.css";
-
-export default defineComponent({
-  components: {
-    Carousel,
-    Slide,
-    Pagination,
-  },
+export default {
   data() {
     return {
       slides: [
@@ -39,98 +50,37 @@ export default defineComponent({
           title: "ZHETISU INVEST",
           content:
             "создание наиболее благоприятных условий для развития и внедрения инноваций",
-          imgsrc: "../images/slide1.png",
+          image: "main-slider1.svg",
         },
         {
           id: 2,
           title: "Инновации и чистые технологии",
           content:
             '"Zhetysu Invest" посвящено развитию инноваций и внедрению экологически чистых технологий. Мы поддерживаем инициативы, способствующие устойчивому развитию и ответственному использованию ресурсов.',
-          imgsrc: "../images/slide2.png",
+          image: "main-slider1.svg",
+        },
+        {
+          id: 3,
+          title: "Инновации и чистые технологии",
+          content:
+            '"Zhetysu Invest" посвящено развитию инноваций и внедрению экологически чистых технологий. Мы поддерживаем инициативы, способствующие устойчивому развитию и ответственному использованию ресурсов.',
+          image: "main-slider1.svg",
         },
       ],
       currentIndex: 0,
     };
   },
-});
+  methods: {
+    nextSlide() {
+      this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+    },
+    prevSlide() {
+      this.currentIndex =
+        (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+    },
+    goToSlide(index) {
+      this.currentIndex = index;
+    },
+  },
+};
 </script>
-
-<style>
-.carousel {
-  position: relative;
-  overflow: hidden;
-}
-.carousel__item {
-  color: var(--vc-clr-white);
-  font-size: 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.carousel__slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.carousel__prev,
-.carousel__next {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--2, #577ea4);
-  position: absolute;
-  margin-top: 0;
-}
-
-.slider-title {
-  color: var(--Main-text, #262626);
-  font-feature-settings: "dlig" on;
-  font-family: Poppins;
-  font-size: 48px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 52px; /* 108.333% */
-  text-align: left;
-}
-.slider-p {
-  color: var(--Main-text, #262626);
-  font-feature-settings: "dlig" on;
-  font-family: Poppins;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px; /* 160% */
-  letter-spacing: 0.4px;
-  margin: 0;
-  text-align: left;
-}
-.slider-text button {
-  display: flex;
-  padding: 16px 24px;
-  align-items: flex-start;
-  gap: 10px;
-  border-radius: 24px;
-  background: #ffd748;
-  color: var(--Main-text, #262626);
-  border: none;
-
-  /* button text */
-  font-family: Inter;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px; /* 133.333% */
-}
-
-.slider-text {
-  display: flex;
-  width: 570px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 40px;
-  text-align: left;
-}
-</style>
